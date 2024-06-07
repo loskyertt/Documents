@@ -1,0 +1,133 @@
+# 一、conda 指令
+
+## 查看配置
+
+```shell
+conda config --show channels    # 查看镜像源
+conda config --show-sources        # 查看配置文件内容
+```
+
+## 设置代理端口
+
+```shell
+# 添加代理地址端口
+conda config --set proxy_servers.http http://127.0.0.1:10809
+conda config --set proxy_servers.https http://127.0.0.1:10809
+
+# 移除代理
+conda config --remove-key proxy_servers
+```
+
+## conda环境
+
+```shell
+# 创建
+conda create -n <conda_name> python==<版本号>
+# 激活conda环境
+conda activate <conda_name>
+# 回到base环境
+conda deactivate
+
+# 查看有哪些conda环境
+conda info --envs
+
+# 删除全部环境
+conda remove -n env_name --all
+# 删除指定环境
+conda env remove -n env_name
+
+# 重命名环境（将 --clone 后面的环境重命名成 -n 后面的名字）
+conda create -n torch --clone py3      # 将 py3 重命名为 torch
+```
+
+## 下载库
+
+```shell
+# 从 conda-forge 渠道中提供的包安装
+conda install -c conda-forge <package_name>
+
+# 查询 conda-forge 中的包
+conda search -c conda-forge <package_name>
+
+# 安装指定版本的
+conda install -c conda-forge <package_name>=<版本号>
+```
+
+### 1). 安装GDAL库
+
+```shell
+#  安装 gdal 的依赖库 geos 和 proj
+conda install geos proj
+# 安装指定版本GDAL
+conda install -c conda-forge gdal=3.2.1
+```
+
+## 迁移 conda 环境
+
+将要迁移的环境打包
+
+```shell
+conda pack -n 虚拟环境名称 -o environment.tar.gz
+```
+
+如果报错：No command ‘conda pack’
+
+```shell
+# 尝试使用
+conda install -c conda-forge conda-pack
+```
+
+复制压缩文件到新的电脑环境。进到conda的安装目录：/anaconda(或者miniconda)/envs/
+
+```shell
+# 对于 ubuntu 可以通过 whereis conda 查看 conda的安装路径
+# cd 到 conda 的安装路径
+mkdir environment
+
+# 解压conda环境：
+tar -xzvf environment.tar.gz -C  environment
+```
+
+# 二、pip 指令
+
+## 使用临时镜像源下载库
+
+```shell
+pip install <package_name> -i <镜像源url>
+```
+
+# 三、镜像源
+
+```shell
+https://pypi.tuna.tsinghua.edu.cn/simple    # 清华
+https://pypi.mirrors.ustc.edu.cn/simple        # 中科大
+http://mirrors.aliyun.com/pypi/simple/        # 阿里云
+http://pypi.douban.com/simple/            # 豆瓣
+```
+
+# 四、Proxy App Speed Test
+
+## speedTest
+
+```bash
+日本：https://185-140-53-2.lg.looking.house/1000.mb
+新加坡：https://23-27-101-2.lg.looking.house/100.mb
+
+https://speed.cloudflare.com/__down?bytes=10000000
+https://speed.cloudflare.com/__down?bytes=50000000
+https://speed.cloudflare.com/__down?bytes=100000000
+https://speed.cloudflare.com/__down?bytes=200000000
+
+http://cachefly.cachefly.net/50mb.test
+
+# 老版测速
+http://cachefly.cachefly.net/10mb.test
+http://cachefly.cachefly.net/100mb.test 
+```
+
+## speedurl
+
+```
+https://www.google.com/generate_204
+http://cp.cloudflare.com/
+```
