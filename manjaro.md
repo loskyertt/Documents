@@ -258,7 +258,7 @@ sudo pacman -S docker-compose
   sudo pacman -Syu base-devel
   ```
 
-## 安装或更新软件包
+## 2.安装或更新软件包
 
 - **介绍：**
   在 Manjaro（以及其他基于 Arch 的发行版）中，`pacman` 是一个用于软件包管理的命令行工具。下面是 `pacman` 命令的详细解释：
