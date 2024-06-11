@@ -67,7 +67,7 @@ CondaError: Run 'conda init' before 'conda activate'
 
 验证 conda 是否配置好：
 
-```sh
+```bash
 conda --version
 ```
 
@@ -75,7 +75,7 @@ conda --version
 
 把段复制到`.zshrc`中，注意安装miniconda的路径：
 
-```
+```bash
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -93,15 +93,6 @@ unset __conda_setup
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 ```
 
-## 2.创建虚拟环境
-
-**在指定文件路径下创建conda环境：**
-
-```sh
-conda create --yes --prefix /home/sky/桌面/pointTest/.conda python=3.11
-```
-
-注意：`--prefix/-p`不能与`--name/-n`同时使用！
 
 # 二、Linux下的docker
 
@@ -330,15 +321,15 @@ sudo pacman -S firefox
 
 - **查看可升级的包/库：**
   
-  ```
-  # 查看包
+  ```bash
+    # 查看包
   sudo pacman -Qu
   
   # 查看库
   sudo pacman -Q
   ```
 
-## 2.卸载
+## 3.卸载
 
 ### 卸载单个软件包
 
@@ -418,7 +409,7 @@ sudo pacman -R google-chrome
 sudo pacman -Rns google-chrome
 ```
 
-## 3.查看开机启动项
+## 4.查看开机启动项
 
 ### 方法一：使用 `systemctl` 查看 systemd 服务
 
@@ -482,7 +473,7 @@ chkconfig --list
 systemctl list-unit-files --state=enabled
 ```
 
-## 4.文件操作
+## 5.文件操作
 
 - **创建文件**
 
@@ -526,9 +517,57 @@ cp v1 v2 -r
 cp lib.so lib1
 ```
 
+## 6.软件包管理
+
+可以使用包管理工具 `pacman` 和 `pamac` 来查看已安装的软件包。以下是具体的指令和方法：
+
+### 方法一：使用 `pacman`
+
+`pacman` 是 Manjaro 和 Arch Linux 的默认包管理工具，可以列出所有已安装的软件包。
+
+1. **列出所有已安装的软件包**：
+   
+   ```bash
+   pacman -Q
+   ```
+
+2. **列出所有已安装的软件包及其版本（包括用户手动安装的）**：
+   
+   ```bash
+   pacman -Qe
+   ```
+
+3. **列出所有的外部软件包（即非官方仓库安装的包，如 AUR 软件包）**：
+   
+   ```bash
+   pacman -Qm
+   ```
+
+### 方法二：使用 `pamac`
+
+`pamac` 是 Manjaro 提供的图形化包管理工具，但也可以通过命令行使用。
+
+1. **列出所有已安装的软件包**：
+   
+   ```bash
+   pamac list --installed
+   ```
+
+2. **列出所有已安装的软件包及其版本**：
+   
+   ```bash
+   pamac list --installed --quiet
+   ```
+
+3. **列出所有的外部软件包（即非官方仓库安装的包，如 AUR 软件包）**：
+   
+   ```bash
+   pamac list --foreign
+   ```
+
 # 四、终端代理设置
 
-```
+```bash
 kate ~/.zshrc
 ```
 
@@ -552,13 +591,13 @@ noproxy(){
 
 `2334`为Hiddify-next的端口
 
-```
+```bash
 source ~/.zshrc
 ```
 
 - **效果：**
 
-```
+```bash
 ╭─ ~                                                                                 
 ╰─❯ proxy_h
 HTTP Proxy on by hiddify

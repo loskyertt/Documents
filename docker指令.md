@@ -16,7 +16,7 @@
    -v ~/docker_volume/mysql/data:/var/lib/mysql \
    -v ~/docker_volume/mysql/init:/docker-entrypoint-initdb.d \
    -v ~/docker_volume/mysql/conf:/etc/mysql/conf.d \
-   -d mysql
+   -d mysql:<版本号>
    ```
    
    以上命令的说明：
@@ -129,27 +129,28 @@ docker inspect <容器名>
 
 2. **创建并运行 nginx 容器**
    
-   ```
-   docker run --name nginx-test -p 8080:80 -d nginx
+   ```bash
+   docker run --name nginx -p 8083:80 -d \
+   -v ~/docker_volume/nginx/www:/usr/share/nginx/html:ro \
+   -v ~/docker_volume/nginx/conf.d:/etc/nginx/conf.d:ro \
+   --link php-fpm:php \
+   nginx
    ```
    
+   这里的`ro`表示只读卷的意思，不能对挂载卷进行修改（可以不要）！
    浏览器输入：`localhost:8080`检查是否运行成功。
 
 3. **拉取 php 镜像**
    
-   ```
-   docker pull php
+   ```bash
+   docker pull php:7.4-fpm
    ```
 
 4. **创建并运行 php 容器**
    
+   ```bash
+   docker run --name php-fpm -v ~/docker_volume/nginx/www:/www -d php:7.4-fpm
    ```
-   docker run --name php-test -v ~/nginx/www:/www -d php
-   ```
-   
-    参数说明：
-   
-   - `-v ~/nginx/www:/www`:将主机中项目的目录`~/nginx/www`挂载到容器的`/www`。
 
 # 三、docker-ubuntu
 
@@ -160,11 +161,64 @@ docker inspect <容器名>
   ```
 
 - **进入容器：**
-  
-  ```bash
-    docker exec -it ubuntu-test bash 
-  ```
-  
+
+```bash
+docker exec -it ubuntu-test bash 
+```
+
   要退出正在交互模式下的容器终端，可以执行以下操作：
+
 1. 按下 `Ctrl + D` 快捷键。
 2. 或者在容器终端中键入 `exit` 命令并按回车键。
+
+# 补充
+
+## 1.配置代理
+
+1.创建`dockerd`相关的`systemd`目录，这个目录下的配置将覆盖`dockerd`的默认配置：
+
+```bash
+sudo mkdir -p /etc/systemd/system/docker.service.d
+```
+
+2.新建配置文件`/etc/systemd/system/docker.service.d/http-proxy.conf`，这个文件中将包含环境变量：
+
+```
+[Service]
+Environment="HTTP_PROXY=http://127.0.0.1:2334"
+Environment="HTTPS_PROXY=http://127.0.0.1:2334"
+```
+
+这里的`2334`是`hiddify-next`的默认端口。
+
+3.如果你自己建了私有的镜像仓库，需要`dockerd`绕过代理服务器直连，那么配置`NO_PROXY`变量：
+
+```
+[Service]
+Environment="HTTP_PROXY=http://proxy.example.com:80"
+Environment="HTTPS_PROXY=https://proxy.example.com:443"
+Environment="NO_PROXY=your-registry.com,10.10.10.10,*.example.com"
+```
+
+多个`NO_PROXY`变量的值用逗号分隔，而且可以使用通配符（*），极端情况下，如果`NO_PROXY=*`，那么所有请求都将不通过代理服务器。
+
+4.重新加载配置文件，重启`dockerd`
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+5.检查确认环境变量已经正确配置：
+
+```bash
+sudo systemctl show --property=Environment docker
+```
+
+像这样就成功了：
+
+```
+╰─❯ sudo systemctl show --property=Environment docker        
+[sudo] sky 的密码：
+Environment=HTTP_PROXY=http://127.0.0.1:2334 HTTPS_PROXY=http://127.0.0.1:2334
+```

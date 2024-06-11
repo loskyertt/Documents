@@ -20,11 +20,15 @@ conda config --remove-key proxy_servers
 
 ## conda环境
 
-```shell
-# 创建
+```bash
+# 创建（带名字）
 conda create -n <conda_name> python==<版本号>
+# 在指定文件路径下创建conda环境
+conda create --yes --prefix /home/sky/桌面/pointTest/.conda python=3.11
+
 # 激活conda环境
 conda activate <conda_name>
+
 # 回到base环境
 conda deactivate
 
@@ -39,6 +43,7 @@ conda env remove -n env_name
 # 重命名环境（将 --clone 后面的环境重命名成 -n 后面的名字）
 conda create -n torch --clone py3      # 将 py3 重命名为 torch
 ```
+注意：`--prefix/-p`不能与`--name/-n`同时使用！
 
 ## 下载库
 
@@ -103,31 +108,4 @@ https://pypi.tuna.tsinghua.edu.cn/simple    # 清华
 https://pypi.mirrors.ustc.edu.cn/simple        # 中科大
 http://mirrors.aliyun.com/pypi/simple/        # 阿里云
 http://pypi.douban.com/simple/            # 豆瓣
-```
-
-# 四、Proxy App Speed Test
-
-## speedTest
-
-```bash
-日本：https://185-140-53-2.lg.looking.house/1000.mb
-新加坡：https://23-27-101-2.lg.looking.house/100.mb
-
-https://speed.cloudflare.com/__down?bytes=10000000
-https://speed.cloudflare.com/__down?bytes=50000000
-https://speed.cloudflare.com/__down?bytes=100000000
-https://speed.cloudflare.com/__down?bytes=200000000
-
-http://cachefly.cachefly.net/50mb.test
-
-# 老版测速
-http://cachefly.cachefly.net/10mb.test
-http://cachefly.cachefly.net/100mb.test 
-```
-
-## speedurl
-
-```
-https://www.google.com/generate_204
-http://cp.cloudflare.com/
 ```
