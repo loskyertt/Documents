@@ -2,14 +2,14 @@
 
 - **已安装的:**
   
-  ```bash
-  sudo pacman -Sy mesa mesa-demos
-  sudo pacman -Sy glfw-wayland glew
-  sudo pacman -Sy freeglut
-   sudo pacman -S freeglut3-dev 
-  ```
+```bash
+sudo pacman -Sy mesa mesa-demos
+sudo pacman -Sy glfw-wayland glew
+sudo pacman -Sy freeglut
+sudo pacman -S freeglut3-dev 
+```
 
-CMakeLists.txt配置：
+- **CMakeLists.txt配置：**
 
 ```cmake
 cmake_minimum_required(VERSION 3.10)
@@ -86,6 +86,5 @@ Created symlink /etc/systemd/system/multi-user.target.wants/1panel.service → /
 
 # 三、安装"oh my zsh"
 
-   安装完 oh my zsh 后终端中有些命令不能使用：
-
-  编辑 .zshrc 发现里面内容都被替换掉了，之前的命令都被转移到一个叫 .zshrc.pre-oh-my-zsh 文件中。
+安装完 oh my zsh 后终端中有些命令不能使用：
+编辑 .zshrc 发现里面内容都被替换掉了，之前的命令都被转移到一个叫 .zshrc.pre-oh-my-zsh 文件中。
