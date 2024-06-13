@@ -93,7 +93,6 @@ unset __conda_setup
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 ```
 
-
 # 二、Linux下的docker
 
 ### 1. 启动 Docker 服务
@@ -610,3 +609,91 @@ HTTP Proxy off
 ╰─❯ proxy_n
 HTTP Proxy on by nekoray
 ```
+
+# 五、N卡驱动安装
+
+- **全面更新系统**
+  
+  ```bash
+  sudo pacman -Syu
+  ```
+
+- **查看显卡类型**
+  
+  ```bash
+  lspci -vnn | grep VGA
+  
+  # 或者
+  lspci -k | grep -EA3 'VGA|3D'
+  ```
+
+然后从官网下载对应型号的驱动，一定要把下载好的文件放到主文件夹（`~`）下！
+
+- **查看内核**
+  
+  ```bash
+  uname -r
+  ```
+
+- **下载内核头文件**
+  
+  ```bash
+  sudo pacman -S linux61-headers
+  ```
+  
+  注：`linux61`表示是`6.1.x`系列的内核，如果是`4.19.x`系列的，那么就是`linux419`。
+
+- **安装相应的依赖工具**
+  
+  ```bash
+  sudo pacman -S base-devel dkms
+  ```
+  
+  - **自动安装推荐的开源驱动程序**
+    
+    ```bash
+    sudo mhwd -a pci free 0300
+    ```
+  
+  - **自动安装推荐的闭源驱动程序：**
+    
+    ```bash
+    sudo mhwd -a pci nonfree 0300
+    ```
+
+# 六、zsh美化
+
+- **在`~/.zshrc`文件中进行配置：**
+  
+  | Code   | Info                              |
+  | ------ |:---------------------------------:|
+  | %T     | 系统时间（时：分）                         |
+  | %*     | 系统时间（时：分：秒）                       |
+  | %D     | 系统日期（年-月-日）                       |
+  | %n     | 用户名称（即：当前登陆终端的用户的名称，和whami命令输出相同） |
+  | %B     | 开始到结束使用粗体打印                       |
+  | %b     | 开始到结束使用粗体打印                       |
+  | %U     | 开始到结束使用下划线打印                      |
+  | %u     | 开始到结束使用下划线打印                      |
+  | %d     | 你当前的工作目录                          |
+  | %~     | 你目前的目录相对于～的相对路径                   |
+  | %M     | 计算机的主机名                           |
+  | %m     | 计算机的主机名（在第一个句号之前截断）               |
+  | %l     | 你当前的tty                           |
+  | %F{色码} | 用来设定某个颜色的开始                       |
+  | %f     | 用来设定成预设的样式， 也可以说是设定好的颜色结束         |
+
+- **换行示例：**
+  
+  ```
+  NEWLINE=$'\n'
+  PROMPT="%{$fg[green]%}%d %t %{$reset_color%}%# ${NEWLINE}"
+  ```
+
+- **推荐配置：**
+  
+  ```
+  # PROMPT
+  NEWLINE=$'\n' # 换行
+  PS1="%B%F{2}%D%f %F{60}%*%f%b [%F{184}%n%f@%F{30}%~%f]${NEWLINE}%F{111}$%f "
+  ```
