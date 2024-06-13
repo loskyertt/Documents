@@ -697,3 +697,69 @@ HTTP Proxy on by nekoray
   NEWLINE=$'\n' # 换行
   PS1="%B%F{2}%D%f %F{60}%*%f%b [%F{184}%n%f@%F{30}%~%f]${NEWLINE}%F{111}$%f "
   ```
+  
+
+# 七、中文输入法配置
+
+  ## 1.推荐方式
+
+  ```bash
+  yay -Sy fcitx-im fcitx-configtool
+  ```
+
+  ```bash
+  kate ~/.xprofile
+  ```
+  输入以下内容：
+  ```
+  export GTK_IM_MODULE=fcitx
+  export QT_IM_MODULE=fcitx
+  export XMODIFIERS="@im=fcitx"
+  ```
+
+  ## 2.其它（待定）
+
+  **方式一：**
+  ```bash
+  # 安装fcitx5
+  sudo pacman -S fcitx5-im fcitx5-chinese-addons  fcitx5-rime
+  
+  # 配置
+  kate /etc/environment
+  ```
+  输入以下内容：
+  ```
+  GTK_IM_MODULE=fcitx
+  QT_IM_MODULE=fcitx
+  XMODIFIERS=@im=fcitx
+  SDL_IM_MODULE=fcitx
+  ```
+
+  **方式二：**
+  ```bash
+  yay -S fcitx fcitx-configtool
+  
+  # 配置
+  kate ~/.pam_environment
+  ```
+  输入以下内容：
+  ```
+  GTK_IM_MODULE DEFAULT=fcitx
+  QT_IM_MODULE  DEFAULT=fcitx
+  XMODIFIERS    DEFAULT=\@im=fcitx
+  SDL_IM_MODULE DEFAULT=fcitx
+  ```
+
+
+# 八、EndeavourOS配置镜像源
+
+```bash
+#激活
+sudo pacman -Sy archlinuxcn-keyring haveged
+```
+
+添加以下内容：
+```
+[archlinuxcn]
+Server = https://mirrors.aliyun.com/archlinuxcn/$arch
+```
