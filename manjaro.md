@@ -586,7 +586,7 @@ HTTP Proxy on by nekoray
 ```
 
 
-# 五、N卡驱动安装
+# 五、N卡驱动
 
 - **全面更新系统**
   
@@ -666,11 +666,21 @@ NEWLINE=$'\n'
 PROMPT="%{$fg[green]%}%d %t %{$reset_color%}%# ${NEWLINE}"
 ```
 
+- **显示git分支：**
+```
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+```
+
 - **推荐配置：**
 ```
 # PROMPT
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
 NEWLINE=$'\n' # 换行
-PS1="%B%F{2}%D%f %F{60}%*%f%b [%F{184}%n%f@%F{30}%~%f]${NEWLINE}%F{111}$%f "
+PS1="%B%F{2}%D%f %F{60}%*%f%b [%F{184}%n%f@%F{30}%~%f]$(parse_git_branch)${NEWLINE}%F{111}$%f "
 ```
 或者：
 ```

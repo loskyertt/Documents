@@ -183,7 +183,7 @@ docker exec -it ubuntu-test bash
 sudo mkdir -p /etc/systemd/system/docker.service.d
 ```
 
-2.新建配置文件`/etc/systemd/system/docker.service.d/http-proxy.conf`，这个文件中将包含环境变量：
+2.新建配置文件`kate /etc/systemd/system/docker.service.d/proxy.conf`，这个文件中将包含环境变量：
 
 ```
 [Service]
