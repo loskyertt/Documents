@@ -7,6 +7,7 @@
 如果还没有 SSH 密钥，可以生成一个：
 
 ```bash
+# 推荐
 ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
 或者

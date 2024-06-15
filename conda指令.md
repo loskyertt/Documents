@@ -22,7 +22,7 @@ conda config --remove-key proxy_servers
 
 ```bash
 # 创建（带名字）
-conda create -n <conda_name> python==<版本号>
+conda create -n <conda_name> python=<版本号>
 # 在指定文件路径下创建conda环境
 conda create --yes --prefix /home/sky/桌面/pointTest/.conda python=3.11
 
