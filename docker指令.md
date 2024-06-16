@@ -159,6 +159,8 @@ docker run --name php-fpm -v ~/docker_volume/nginx/www:/www -d php:7.4-fpm
 ```bash
 docker run -itd --name ubuntu-test ubuntu
 ```
+**注意：** 
+这里必须加上`-it`。像ubuntu这种镜像在创建容器时需要分配一个伪终端让它在后台持续运行，否则会在启动容器后立马退出运行。
 
 - **进入容器：**
 
@@ -223,4 +225,42 @@ sudo systemctl show --property=Environment docker
 ╰─❯ sudo systemctl show --property=Environment docker        
 [sudo] sky 的密码：
 Environment=HTTP_PROXY=http://127.0.0.1:2334 HTTPS_PROXY=http://127.0.0.1:2334
+```
+
+## 2.其它指令
+
+### 1).查看镜像版本
+```bash
+docker inspect <镜像ID> | grep -i version
+```
+
+### 2).查看镜像或容器详细信息
+```bash
+# 镜像
+docker inspect <镜像名或ID>
+
+# 容器
+docker inspect <容器名或ID>
+```
+
+### 3).查看容器映射到本地的端口
+
+如过在创建容器时用的是`-P`（随机映射本地端口）而不是`-p xxxx:xxxx`（指定映射本地端口）
+```bash
+docker port <容器名或ID>
+```
+
+### 4).在本地对容器内的文件进行操作
+如果已经创建了一个容器，但在创建时没有做端口映射，可以使用 `docker cp` 命令将容器内的文件导出到宿主机（反之亦然）。
+
+- **从容器复制文件到宿主机:**
+
+```bash
+docker cp my_container:/path/in/container /path/on/host
+```
+
+- **从宿主机复制文件到容器：**
+
+```bash
+docker cp /path/on/host my_container:/path/in/container
 ```

@@ -15,7 +15,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
-按照提示完成生成过程，默认会在 `~/.ssh/` 目录下生成 `id_rsa` 和 `id_rsa.pub` 文件。
+按照提示完成生成过程，默认会在 `~/.ssh/` 目录下生成 `id_ed25519`和`id_ed25519.pub`（第二种生成密钥的方式是`id_rsa` 和 `id_rsa.pub`） 文件。
 
 ## 2. 添加 SSH 密钥到 GitHub
 
