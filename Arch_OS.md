@@ -983,3 +983,13 @@ sudo pacman -Syy
 sudo pacman -S ca-certificates ca-certificates-utils
 ```
 
+## 2.历史命令问题
+出现这种情况`zsh: corrupt history file /home/sky/.zsh/.zsh_history`。有的时候系统因为默写原因强行启动的时候会破坏zsh的历史文件。
+解决办法：
+```bash
+cp ~/.zsh_history ~/.zsh_history_backup
+rm ~/.zsh_history
+strings -eS ~/.zsh_history_backup > ~/.zsh_history
+fc -R ~/.zsh_history
+```
+如果上述步骤没有解决问题，可能是因为.zsh_history文件严重损坏。在这种情况下，需要放弃旧的历史记录并创建一个新的文件。
