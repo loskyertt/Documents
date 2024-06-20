@@ -1,6 +1,9 @@
 # 一、 SSH 密钥
 
-如果使用 SSH 密钥进行身份验证，可以按照以下步骤操作：
+需要提前安装好`OpenSSH`:
+```bash
+sudo pacman -S openssh
+```
 
 ## 1. 生成 SSH 密钥
 

@@ -235,18 +235,16 @@ sudo pacman -S docker-compose
 
 然后，可以使用 `docker-compose` 命令来管理多容器应用。
 
-# 三、manjaro常用指令
+# 三、常用指令
 
 ## 1.初始配置
 
 - **配置镜像源**
-  
 ```bash
 sudo pacman-mirrors -m rank -c China
 ```
 
 - **安装依赖包**
-  
 ```bash
 sudo pacman -Syu base-devel
 ```
@@ -501,7 +499,27 @@ cp v1 v2 -r
 cp lib.so lib1
 ```
 
-## 6.软件包管理
+## 6.赋予文件或文件夹权限
+
+1. 使用`chmod`命令递归地更改文件夹内所有文件和子文件夹的权限：
+```bash
+chmod -R 777 /path/to/your/folder
+```
+`-R`表示递归。
+
+2. 更改文件的权限而不更改文件夹的权限，可以结合`find`命令来实现：
+```bash
+find /path/to/your/folder -type f -exec chmod 777 {} +
+```
+
+这将只更改所有文件的权限，而不影响文件夹的权限。
+
+3. 单独更改文件夹的权限（例如，给文件夹777权限，而文件保持不变）：
+```bash
+find /path/to/your/folder -type d -exec chmod 777 {} +
+```
+
+## 7.软件包管理
 
 可以使用包管理工具 `pacman` 和 `pamac` 来查看已安装的软件包。以下是具体的指令和方法：
 
@@ -793,6 +811,7 @@ mkdir -p .zsh/plugins
 cp .zshrc .zsh/
 mv .zsh_history .zsh/
 ```
+注：若没有`.zsh_history`，那么需要用`touch`指令创建。
 
 - **然后编辑`.zshrc`Copy, 加上：**
 ```
@@ -848,6 +867,11 @@ ln -s ~/.zsh/.zshrc ~/.zshrc
 source ~/.zshrc
 ```
 可以通过`ls -la`来查看是否链接成功。
+
+**注意**：安装"oh my zsh"可能会出现的问题
+
+发现安装完 oh my zsh 后终端中有些命令不能使用：
+编辑 .zshrc 发现里面内容都被替换掉了，之前的配置内容都被转移到一个叫 .zshrc.pre-oh-my-zsh 文件中。
 
 
 # 七、中文输入法配置
@@ -918,4 +942,44 @@ SDL_IM_MODULE DEFAULT=fcitx
 ```
 MAKEFLAGS="-j$(nproc)"
 ```
-`$(nproc)`会自动检测 CPU 核心数，并设置相同数量的并行任务。
+`$(nproc)`会自动检测 CPU 核心数，并设置相同数量的并行任务。包括在执行`make`指令时，可以通过加`-j<核心数>`来手动指定编译时用CPU的核心数。
+
+
+
+# 九、问题汇总
+
+## 1.证书安装问题
+有时候可能无法安装`ca-certificates`这一系列证书，排除掉网络问题后，大概率就是时间问题。解决办法：
+
+1. **同步系统时间**：
+运行以下命令以确保系统时间是准确的：
+```bash
+sudo ntpd -qg
+sudo hwclock --systohc
+```
+
+2. **手动更新CA证书**：
+- 将信任的CA证书复制到`/etc/pki/ca-trust/source/anchors/`。确保证书是PEM或DER格式。
+- 然后，运行以下命令来更新系统中的CA证书：
+```bash
+sudo update-ca-trust
+```
+------------一般到这里就能解决了-------------
+
+3. **更换软件源**：
+- 编辑`/etc/pacman.d/mirrorlist`文件，选择一个新的软件源。
+- 可以使用`reflector`来自动选择最快的软件源：
+```bash
+sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+```
+- 更新软件包数据库：
+```bash
+sudo pacman -Syy
+```
+
+4. **重新安装软件包**：
+可以尝试重新安装`ca-certificates`和`ca-certificates-utils`：
+```bash
+sudo pacman -S ca-certificates ca-certificates-utils
+```
+
